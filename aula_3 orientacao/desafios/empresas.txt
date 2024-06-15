@@ -1,0 +1,32 @@
+empresa 1
+Moda: 1000
+A media é : 3520
+A mediana é:  1400
+O desvio padrao é  3257.606483294138
+
+empresa 2
+Moda: 5000
+A media é : 4200
+A mediana é:  4000
+O desvio padrao é  1923.5384061671346
+
+empresa 3
+Moda: 1200
+A media é : 5700
+A mediana é:  3000
+O desvio padrao é  5888.123640006212
+
+empresa 4
+Moda: 1400
+A media é : 3758.3333333333335
+A mediana é:  3250.0
+O desvio padrao é  2380.423631765293
+
+empresa 5
+Moda: 1400
+A media é : 3758.3333333333335
+A mediana é:  3250.0
+O desvio padrao é  2380.423631765293
+
+A minha escolha seria a Empresa 2, pois aparentemente oferece um salário melhor e apresenta menor variação em comparação com as outras empresas. 
+Na minha opinião, isso a torna uma opção mais estável.
