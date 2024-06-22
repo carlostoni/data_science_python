@@ -1,69 +1,42 @@
-class AlunosNotas:
-    def __init__(self):
-        self.alunos = [
-            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
-            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
-            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
-            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
-            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]}
-        ]
+import matplotlib.pyplot as plt
 
-    def get_aluno_dados(self, aluno_num):
-        if 1 <= aluno_num <= len(self.alunos):
-            return self.alunos[aluno_num - 1]
-        else:
-            return None
+from  media import media1
+from matplotlib import pyplot as plt
+
+aluno1 = [4,5,7]
+aluno1.sort()
+
+aluno2 = [5,3,8]
+aluno2.sort()
+
+aluno3 = [5,5,5]
+aluno3.sort()
+
+aluno4 = [1,2,4]
+aluno4.sort()
 
 
-def main():
-    alunos = AlunosNotas()
-    escolha_aluno = int(input('Escolha o aluno (1-5): '))
-    dados = alunos.get_aluno_dados(escolha_aluno)
+cargos = ["Reprovado","Recupercao","Aprovado"]
 
-    if dados is None:
-        print('Aluno inválido')
-        return
+def hadle(lista, salarios):
 
-    escolha = input('''
-1- Moda
-2- Media
-3- Mediana
-4- Desvio
-5- Varianca
-6- Amplitude
-7- Todos
-''')
+    print('EMPRESA', salarios)
+    print('----------------------------')
+    media1(lista)
 
-    materias = ['matematica', 'portugues', 'quimica']
+hadle(aluno1, aluno1)  
+hadle(aluno2, aluno2)   
+hadle(aluno3, aluno3) 
+hadle(aluno4, aluno4) 
 
-    if escolha == '1':
-        for materia in materias:
-            print(f"Moda de {materia}: {moda(dados[materia])}")
-    elif escolha == '2':
-        for materia in materias:
-            print(f"Média de {materia}: {media(dados[materia])}")
-    elif escolha == '3':
-        for materia in materias:
-            print(f"Mediana de {materia}: {mediana(dados[materia])}")
-    elif escolha == '4':
-        for materia in materias:
-            print(f"Desvio padrão de {materia}: {desvio(dados[materia])}")
-    elif escolha == '5':
-        for materia in materias:
-            print(f"Variância de {materia}: {var(dados[materia])}")
-    elif escolha == '6':
-        for materia in materias:
-            print(f"Amplitude de {materia}: {amplitude(dados[materia])}")
-    elif escolha == '7':
-        for materia in materias:
-            print(f"Moda de {materia}: {moda(dados[materia])}")
-            print(f"Média de {materia}: {media(dados[materia])}")
-            print(f"Mediana de {materia}: {mediana(dados[materia])}")
-            print(f"Desvio padrão de {materia}: {desvio(dados[materia])}")
-            print(f"Variância de {materia}: {var(dados[materia])}")
-            print(f"Amplitude de {materia}: {amplitude(dados[materia])}")
-    else:
-        print('Opção inválida')
+plt.title('CARGOS, SALARIOS')
+plt.ylabel('SALARIOS')
+plt.xlabel('CARGOS')
 
-if __name__ == '__main__':
-    main()
+plt.plot(cargos,aluno1, linestyle='--', marker = 'o')
+plt.plot(cargos,aluno2, linestyle='--', marker = 'o')
+plt.plot(cargos,aluno3, linestyle='--', marker = 'o')
+plt.plot(cargos,aluno4, linestyle='--', marker = 'o')
+plt.grid(True)
+
+plt.show()
