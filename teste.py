@@ -1,11 +1,11 @@
 class AlunosNotas:
     def __init__(self):
         self.alunos = [
-            [[1,2,3],[7,2,3],[1,2,3]],
-            [[1,2,3],[7,2,3],[1,2,3]],
-            [[1,2,3],[7,2,3],[1,2,3]],
-            [[1,2,3],[7,2,3],[1,2,3]],
-            [[1,2,3],[7,2,3],[1,2,3]]
+            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
+            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
+            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
+            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]},
+            {'matematica': [1, 2, 3], 'portugues': [7, 2, 3], 'quimica': [1, 2, 3]}
         ]
 
     def get_aluno_dados(self, aluno_num):
@@ -34,32 +34,34 @@ def main():
 7- Todos
 ''')
 
+    materias = ['matematica', 'portugues', 'quimica']
+
     if escolha == '1':
-        for i in range(3):
-            print(mod(dados[i]))
+        for materia in materias:
+            print(f"Moda de {materia}: {moda(dados[materia])}")
     elif escolha == '2':
-        for i in range(3):
-            print(media(dados[i]))
+        for materia in materias:
+            print(f"Média de {materia}: {media(dados[materia])}")
     elif escolha == '3':
-        for i in range(3):
-            print(mediana(dados[i]))
+        for materia in materias:
+            print(f"Mediana de {materia}: {mediana(dados[materia])}")
     elif escolha == '4':
-        for i in range(3):
-            print(desvio(dados[i]))
+        for materia in materias:
+            print(f"Desvio padrão de {materia}: {desvio(dados[materia])}")
     elif escolha == '5':
-        for i in range(3):
-            print(var(dados[i]))
+        for materia in materias:
+            print(f"Variância de {materia}: {var(dados[materia])}")
     elif escolha == '6':
-        for i in range(3):
-            print(amplitude(dados[i]))
+        for materia in materias:
+            print(f"Amplitude de {materia}: {amplitude(dados[materia])}")
     elif escolha == '7':
-        for i in range(3):
-            print(mod(dados[i]))
-            print(media(dados[i]))
-            print(mediana(dados[i]))
-            print(desvio(dados[i]))
-            print(var(dados[i]))
-            print(amplitude(dados[i]))
+        for materia in materias:
+            print(f"Moda de {materia}: {moda(dados[materia])}")
+            print(f"Média de {materia}: {media(dados[materia])}")
+            print(f"Mediana de {materia}: {mediana(dados[materia])}")
+            print(f"Desvio padrão de {materia}: {desvio(dados[materia])}")
+            print(f"Variância de {materia}: {var(dados[materia])}")
+            print(f"Amplitude de {materia}: {amplitude(dados[materia])}")
     else:
         print('Opção inválida')
 
