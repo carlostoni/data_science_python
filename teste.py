@@ -236,3 +236,20 @@ plt.grid(True, axis='y')
 
 # Exibindo o gráfico
 plt.show()
+
+import matplotlib.pyplot as plt
+
+# Dados de exemplo
+x = [1, 2, 3, 4, 5]
+y = [2, 3, 5, 7, 11]
+
+# Cria o gráfico
+plt.plot(x, y)
+
+# Adiciona rótulos personalizados em três posições
+plt.text(-0.5, 2, 'Label at 2', va='center', rotation='vertical')
+plt.text(-0.5, 5, 'Label at 5', va='center', rotation='vertical')
+plt.text(-0.5, 11, 'Label at 11', va='center', rotation='vertical')
+
+# Mostra o gráfico
+plt.show()
