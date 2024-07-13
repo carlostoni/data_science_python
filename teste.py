@@ -8,6 +8,11 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 # Carrega os dados do arquivo CSV
 dados = pd.read_csv('/mnt/data/file-3JdQMvkMlN0Ewu9ubG7osj8X')
 
+# Converte a coluna 'Star color' em uma coluna numérica se necessário
+# Caso a coluna 'Star color' não seja numérica, será necessário converter ou ajustar a forma como os valores são somados
+# Aqui assumimos que a coluna é numérica ou contém valores que podem ser convertidos para numérico
+dados['Star color'] = pd.to_numeric(dados['Star color'], errors='coerce').fillna(0)
+
 # Agrupa os dados por "Spectral Class" e soma os valores de "Star color"
 dados_agrupados = dados.groupby('Spectral Class')['Star color'].sum().reset_index()
 
