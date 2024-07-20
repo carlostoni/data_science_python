@@ -1,195 +1,92 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+Analisando o Problema e Propondo a Solução Completa
+Entendendo o Problema:
+O código original apresenta alguns problemas, como a verificação incorreta do tipo de dado para o campo "produto" e a falta de tratamento de exceções. Além disso, a interface gráfica poderia ser aprimorada com mais rótulos e organização.
+Solução Completa e Explicada:
 import tkinter as tk
-from tkinter import Tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from tkinter import messagebox
+import sqlite3
 
-# Carrega os dados do arquivo CSV
-dados = pd.read_csv('/mnt/data/file-3JdQMvkMlN0Ewu9ubG7osj8X')
+# Conectar ao banco de dados
+conexao = sqlite3.connect('db.db')
+cursor = conexao.cursor()
 
-# Converte a coluna 'Star color' em uma coluna numérica se necessário
-# Caso a coluna 'Star color' não seja numérica, será necessário converter ou ajustar a forma como os valores são somados
-# Aqui assumimos que a coluna é numérica ou contém valores que podem ser convertidos para numérico
-dados['Star color'] = pd.to_numeric(dados['Star color'], errors='coerce').fillna(0)
+# Criar a tabela (se não existir)
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS vendas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        data TEXT NOT NULL,
+        produto TEXT NOT NULL,
+        preço REAL NOT NULL,
+        quantidade INTEGER NOT NULL
+    )
+''')
+conexao.commit()
 
-# Agrupa os dados por "Spectral Class" e soma os valores de "Star color"
-dados_agrupados = dados.groupby('Spectral Class')['Star color'].sum().reset_index()
+# Função para inserir dados
+def inserir_dados():
+    data = entrada_data.get()
+    produto = entrada_produto.get()
+    preco = float(entrada_preco.get())  # Converter preço para float
+    quantidade = int(entrada_quantidade.get())  # Converter quantidade para inteiro
 
-# Converte as colunas agrupadas em listas
-spectral = dados_agrupados['Spectral Class'].tolist()
-star_color = dados_agrupados['Star color'].tolist()
+    try:
+        cursor.execute('''
+            INSERT INTO vendas (data, produto, preço, quantidade)
+            VALUES (?, ?, ?, ?)
+        ''', (data, produto, preco, quantidade))
+        conexao.commit()
+        messagebox.showinfo('Sucesso', 'Dados inseridos com sucesso!')
+        limpar_campos()
+    except sqlite3.Error as e:
+        messagebox.showerror('Erro', f'Erro ao inserir dados: {e}')
 
-# Cria o gráfico de barras
-fig, ax = plt.subplots()
-bars = ax.bar(spectral, star_color)
+# Função para limpar os campos de entrada
+def limpar_campos():
+    entrada_data.delete(0, tk.END)
+    entrada_produto.delete(0, tk.END)
+    entrada_preco.delete(0, tk.END)
+    entrada_quantidade.delete(0, tk.END)
 
-# Adiciona os valores no topo de cada barra
-for bar in bars:
-    height = bar.get_height()
-    ax.annotate('{}'.format(height),
-                xy=(bar.get_x() + bar.get_width() / 2, height),
-                xytext=(0, 3),  # 3 points vertical offset
-                textcoords="offset points",
-                ha='center', va='bottom')
-
-# Configura o Tkinter
-def on_closing():
-    janela.quit()
-    janela.destroy()
-
-Tk().withdraw()
+# Criar a janela principal
 janela = tk.Tk()
-janela.geometry("1920x1080")
-janela.protocol("WM_DELETE_WINDOW", on_closing)
+janela.title("Cadastro de Vendas")
 
-# Adiciona o gráfico ao canvas
-canvas = FigureCanvasTkAgg(fig, master=janela)
-canvas.draw()
-canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
+# Rótulos e campos de entrada
+tk.Label(janela, text="Data (DD/MM/AAAA):").grid(row=0, column=0, sticky="e", padx=10, pady=5)
+entrada_data = tk.Entry(janela)
+entrada_data.grid(row=0, column=1, padx=10, pady=5)
 
-# Inicia o loop principal do Tkinter
+tk.Label(janela, text="Produto:").grid(row=1, column=0, sticky="e", padx=10, pady=5)
+entrada_produto = tk.Entry(janela)
+entrada_produto.grid(row=1, column=1, padx=10, pady=5)
+
+tk.Label(janela, text="Preço:").grid(row=2, column=0, sticky="e", padx=10, pady=5)
+entrada_preco = tk.Entry(janela)
+entrada_preco.grid(row=2, column=1, padx=10, pady=5)
+
+tk.Label(janela, text="Quantidade:").grid(row=3, column=0, sticky="e", padx=10, pady=5)
+entrada_quantidade = tk.Entry(janela)
+entrada_quantidade.grid(row=3, column=1, padx=10, pady=5)
+
+# Botão para inserir dados
+btn_inserir = tk.Button(janela, text="Inserir", command=inserir_dados)
+btn_inserir.grid(row=4, column=0, columnspan=2, pady=10)
+
+# Iniciar o loop da aplicação
 janela.mainloop()
 
+# Fechar a conexão ao banco de dados
+conexao.close()
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import Tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-# Carrega os dados do arquivo CSV
-dados = pd.read_csv('brasileirao.csv')
-
-
-# Converte as colunas de interesse em listas
-team = dados['team'].fillna(0).to_list()
-points = dados['points'].fillna(0).to_list()
-
-# Seleciona uma porção dos dados para visualização
-n_team = team[1:1000]
-n_points  = points [1:1000]
-
-# Cria o gráfico de barras
-fig, ax = plt.subplots()
-bars = ax.bar(n_team, n_points)
-
-def on_closing():
-    janela.quit()
-    janela.destroy()
-
-
-Tk().withdraw()
-janela = tk.Tk()
-janela.geometry("1920x1080")
-janela.protocol("WM_DELETE_WINDOW", on_closing)
-
-# Adiciona o gráfico ao canvas
-canvas = FigureCanvasTkAgg(fig, master=janela)
-canvas.draw()
-canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-
-# Inicia o loop principal do Tkinter
-janela.mainloop()
-
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import Tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-# Carrega os dados do arquivo CSV
-dados = pd.read_csv('brasileirao.csv')
-
-# Agrupa os dados por time e soma os pontos
-soma_pontos_por_time = dados.groupby('team')['points'].sum().reset_index()
-
-# Converte as colunas de interesse em listas
-team = soma_pontos_por_time['team'].fillna(0).to_list()
-points = soma_pontos_por_time['points'].fillna(0).to_list()
-
-# Seleciona uma porção dos dados para visualização (se necessário)
-n_team = team[:50]  # Mostra apenas os primeiros 50 times (ajuste conforme necessário)
-n_points = points[:50]
-
-# Cria o gráfico de barras
-fig, ax = plt.subplots(figsize=(10, 8))
-bars = ax.barh(n_team, n_points, color='skyblue')
-ax.set_xlabel('Pontos')
-ax.set_ylabel('Time')
-ax.set_title('Total de Pontos por Time no Campeonato Brasileiro')
-
-# Adiciona rótulos de valor em cada barra
-for bar in bars:
-    ax.text(bar.get_width(), bar.get_y() + bar.get_height() / 2,
-            f'{bar.get_width():.0f}', va='center', ha='left')
-
-def on_closing():
-    janela.quit()
-    janela.destroy()
-
-Tk().withdraw()
-janela = tk.Tk()
-janela.geometry("1920x1080")
-janela.protocol("WM_DELETE_WINDOW", on_closing)
-
-# Adiciona o gráfico ao canvas
-canvas = FigureCanvasTkAgg(fig, master=janela)
-canvas.draw()
-canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-
-# Inicia o loop principal do Tkinter
-janela.mainloop()
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import Tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-
-# Carrega os dados do arquivo CSV
-dados = pd.read_csv('brasileirao.csv')
-
-# Agrupa os dados por time e soma os pontos
-soma_pontos_por_time = dados.groupby('team')['points'].sum().reset_index()
-
-# Converte as colunas de interesse em listas
-team = soma_pontos_por_time['team'].fillna(0).to_list()
-points = soma_pontos_por_time['points'].fillna(0).to_list()
-
-# Seleciona uma porção dos dados para visualização (se necessário)
-n_team = team[:50]  # Mostra apenas os primeiros 50 times (ajuste conforme necessário)
-n_points = points[:50]
-
-# Cria o gráfico de barras
-fig, ax = plt.subplots(figsize=(10, 8))
-bars = ax.barh(n_team, n_points, color='skyblue')
-ax.set_xlabel('Pontos')
-ax.set_ylabel('Time')
-ax.set_title('Total de Pontos por Time no Campeonato Brasileiro')
-
-# Adiciona rótulos de valor em cada barra
-for bar, team_name in zip(bars, n_team):
-    ax.text(bar.get_width(), bar.get_y() + bar.get_height() / 2,
-            f'{team_name}: {bar.get_width():.0f}', va='center', ha='left')
-
-def on_closing():
-    janela.quit()
-    janela.destroy()
-
-Tk().withdraw()
-janela = tk.Tk()
-janela.geometry("1920x1080")
-janela.protocol("WM_DELETE_WINDOW", on_closing)
-
-# Adiciona o gráfico ao canvas
-canvas = FigureCanvasTkAgg(fig, master=janela)
-canvas.draw()
-canvas.get_tk_widget().pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
-
-# Inicia o loop principal do Tkinter
-janela.mainloop()
+Melhorias:
+ * Conversão de Tipos: Converte explicitamente preço para float e quantidade para int para garantir tipos de dados corretos no banco de dados.
+ * Limpeza de Campos: A função limpar_campos() agiliza a limpeza dos campos após a inserção dos dados.
+ * Formatação da Interface: Utiliza o argumento sticky="e" para alinhar os rótulos à direita, melhorando a aparência da interface.
+ * Mensagens Claras: As mensagens de sucesso e erro são mais claras e informativas.
+ * Tratamento de Exceções: O bloco try-except captura e exibe mensagens de erro mais específicas.
+Considerações Adicionais:
+ * Validação de Dados: Você pode adicionar mais validação para garantir que os dados inseridos sejam válidos, como verificar se a data está no formato correto.
+ * Interface Gráfica: Explore mais widgets do Tkinter para criar uma interface mais sofisticada, como combo boxes para selecionar produtos ou calendários para escolher datas.
+ * Banco de Dados: Considere utilizar um ORM (Object-Relational Mapper) como o SQLAlchemy para facilitar a interação com o banco de dados.
+ * Gráficos: Para criar gráficos, você pode utilizar bibliotecas como Matplotlib ou Plotly.
+Este código fornece uma base sólida para um aplicativo de cadastro de vendas. Você pode personalizá-lo de acordo com suas necessidades específicas.
